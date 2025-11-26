@@ -1,11 +1,340 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enviar</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../src/css/styles.css">
 </head>
-<body>
-    
+
+<body class="landing-page">
+    <header>
+        <!-- Navbar -->
+        <nav class="navbar navbar-dark navbar-menu">
+            <div class="container">
+                <!-- Logo -->
+                <a href="menu.html" class="navbar-brand mb-0 h1 text-white text-decoration-none">
+                    <i class="bi bi-wallet2 me-2"></i>
+                    Mi Billetera
+                </a>
+
+                <!-- Botón Salir -->
+                <a href="../index.html" class="btn btn-outline-light btn-sm rounded-pill px-3">
+                    <i class="bi bi-box-arrow-right me-1"></i>
+                    Salir
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="min-vh-100 pt-4">
+        <div class="container py-3">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-7">
+                    <!-- Encabezado -->
+                    <div class="text-center mb-4 fade-in">
+                        <h1 class="text-white fw-bold mb-2">Enviar Dinero</h1>
+                        <p class="text-white-50">Transfiere fondos a tus contactos</p>
+                    </div>
+
+                    <!-- Card del formulario -->
+                    <div class="card shadow-lg menu-card fade-in-delay-1">
+                        <div class="card-body p-4">
+                            <!-- Saldo disponible -->
+                            <div class="saldo-actual-box mb-4">
+                                <div class="text-center">
+                                    <small class="d-block mb-2 text-uppercase saldo-label">Saldo
+                                        disponible</small>
+                                    <div class="saldo-amount saldo-amount-sendmoney">
+                                        $<span id="saldo-disponible">12,500</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mensaje de confirmación -->
+                            <div id="mensaje-confirmacion" class="mb-3"></div>
+
+                            <!-- Contenedor para alertas -->
+                            <div id="alert-container" class="mb-3"></div>
+
+                            <!-- Formulario de búsqueda -->
+                            <form id="searchForm" class="mb-3">
+                                <label for="buscarContacto" class="form-label fw-bold">
+                                    Buscar contacto
+                                </label>
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-search"></i>
+                                    </span>
+                                    <input type="text" class="form-control" id="buscarContacto"
+                                        placeholder="Buscar por nombre o alias..." autocomplete="off">
+                                </div>
+                                <small class="form-text text-muted">
+                                    <i class="bi bi-exclamation-circle me-1"></i>
+                                    Busca entre tus contactos guardados
+                                </small>
+                            </form>
+
+                            <!-- Botón Agregar nuevo contacto -->
+                            <div class="d-grid gap-3 mb-4">
+                                <button type="button" class="btn btn-menu btn-lg py-3" data-bs-toggle="modal"
+                                    data-bs-target="#nuevoContactoModal">
+                                    <i class="bi bi-person-plus me-2"></i>
+                                    Agregar nuevo contacto
+                                    <i class="bi bi-arrow-right float-end mt-1"></i>
+                                </button>
+                            </div>
+
+                            <!-- Lista de contactos recientes -->
+                            <h6 class="fw-bold mb-3">
+                                <i class="bi bi-people me-2"></i>
+                                Contactos recientes
+                            </h6>
+                            <div id="lista-contactos" class="d-grid gap-3">
+                                <div class="contact-card" data-nombre="María González" data-alias="maria.gonzalez.banco"
+                                    data-cbu="1234567890123456789012">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <div class="contact-avatar me-3">
+                                                <i class="bi bi-person-fill"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1 fw-bold">María González</h6>
+                                                <small>maria.gonzalez.banco</small>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-menu btn-enviar-dinero" data-bs-toggle="modal"
+                                            data-bs-target="#enviarDineroModal" data-contacto="María González">
+                                            <i class="bi bi-send"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="contact-card" data-nombre="Carlos Pérez" data-alias="carlos.perez.wallet"
+                                    data-cbu="2234567890123456789012">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <div class="contact-avatar me-3">
+                                                <i class="bi bi-person-fill"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1 fw-bold">Carlos Pérez</h6>
+                                                <small>carlos.perez.wallet</small>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-menu btn-enviar-dinero" data-bs-toggle="modal"
+                                            data-bs-target="#enviarDineroModal" data-contacto="Carlos Pérez">
+                                            <i class="bi bi-send"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="contact-card" data-nombre="Ana Rodríguez" data-alias="ana.rodriguez.pay"
+                                    data-cbu="3234567890123456789012">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <div class="contact-avatar me-3">
+                                                <i class="bi bi-person-fill"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1 fw-bold">Ana Rodríguez</h6>
+                                                <small>ana.rodriguez.pay</small>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-menu btn-enviar-dinero" data-bs-toggle="modal"
+                                            data-bs-target="#enviarDineroModal" data-contacto="Ana Rodríguez">
+                                            <i class="bi bi-send"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botón volver al menú -->
+                            <div class="d-grid gap-3 mt-4">
+                                <a href="menu.html" class="btn btn-outline-secondary btn-lg">
+                                    <i class="bi bi-arrow-left me-2"></i>
+                                    Volver al menú
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-minimal text-center py-4">
+        <div class="container">
+            <p class="small text-white-75 mb-1">
+                Desarrollado por { Leandro Marchant }
+            </p>
+            <p class="small text-white-50 mb-0">
+                © 2025 Alke Wallet. Todos los derechos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Modal: Agregar nuevo contacto -->
+    <div class="modal fade" id="nuevoContactoModal" tabindex="-1" aria-labelledby="nuevoContactoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="nuevoContactoModalLabel">
+                        <i class="bi bi-person-plus me-2"></i>
+                        Agregar nuevo contacto
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="nuevoContactoForm">
+                        <div class="mb-3">
+                            <label for="nombreContacto" class="form-label">Nombre y apellido</label>
+                            <input type="text" class="form-control" id="nombreContacto" placeholder="Ej: Juan Pérez"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cbuContacto" class="form-label">Número de CBU</label>
+                            <input type="text" class="form-control" id="cbuContacto" maxlength="22" minlength="22"
+                                pattern="\d{22}" placeholder="Ingrese 22 dígitos numéricos"
+                                title="El CBU debe contener exactamente 22 dígitos" required>
+                            <small class="form-text text-muted">Debe contener exactamente 22 dígitos</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="aliasContacto" class="form-label">Alias</label>
+                            <input type="text" class="form-control" id="aliasContacto"
+                                placeholder="Ej: juan.perez.banco" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bancoContacto" class="form-label">Nombre del Banco</label>
+                            <input type="text" class="form-control" id="bancoContacto" placeholder="Ej: Banco de Chile"
+                                required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-success">
+                        <i class="bi bi-person-check-fill me-2"></i>
+                        Guardar contacto
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Editar contacto -->
+    <div class="modal fade" id="editarContactoModal" tabindex="-1" aria-labelledby="editarContactoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarContactoModalLabel">
+                        <i class="bi bi-pencil-square me-2"></i>
+                        Editar contacto
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editarContactoForm">
+                        <input type="hidden" id="cbuOriginal">
+                        <div class="mb-3">
+                            <label for="nombreContactoEditar" class="form-label">Nombre y apellido</label>
+                            <input type="text" class="form-control" id="nombreContactoEditar"
+                                placeholder="Ej: Juan Pérez" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cbuContactoEditar" class="form-label">Número de CBU</label>
+                            <input type="text" class="form-control" id="cbuContactoEditar" maxlength="22" minlength="22"
+                                pattern="\d{22}" placeholder="Ingrese 22 dígitos numéricos"
+                                title="El CBU debe contener exactamente 22 dígitos" required>
+                            <small class="form-text text-muted">Debe contener exactamente 22 dígitos</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="aliasContactoEditar" class="form-label">Alias</label>
+                            <input type="text" class="form-control" id="aliasContactoEditar"
+                                placeholder="Ej: juan.perez.banco" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bancoContactoEditar" class="form-label">Nombre del Banco</label>
+                            <input type="text" class="form-control" id="bancoContactoEditar"
+                                placeholder="Ej: Banco de Chile" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-success">
+                        <i class="bi bi-save me-2"></i>
+                        Guardar cambios
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Enviar dinero -->
+    <div class="modal fade" id="enviarDineroModal" tabindex="-1" aria-labelledby="enviarDineroModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="enviarDineroModalLabel">
+                        <i class="bi bi-send me-2"></i>
+                        Enviar dinero
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="enviarDineroForm">
+                        <div class="mb-3">
+                            <label for="montoEnviar" class="form-label">Monto a enviar</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-currency-dollar"></i>
+                                </span>
+                                <input type="number" class="form-control" id="montoEnviar" min="1" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mensajeEnvio" class="form-label">Mensaje (opcional)</label>
+                            <textarea class="form-control" id="mensajeEnvio" rows="2"
+                                placeholder="Agregar un mensaje..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-success">
+                        <i class="bi bi-send-check-fill me-2"></i>
+                        Confirmar envío
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JavaScript personalizado -->
+    <script src="../src/js/sendMoney.js"></script>
 </body>
+
 </html>
