@@ -1,0 +1,1156 @@
+/* ============================================
+    1. VARIABLES CSS
+   ============================================ */
+:root {
+    /* Colores principales */
+    --primary-light: #6ea8fe;
+    --primary-blue: #0d6efd;
+    --primary-dark: #0a58ca;
+
+    /* Colores secundarios */
+    --secundary-light: #97a6e7;
+    --secundary-mid: #667eea;
+    --secundary-dark: #4b5cc4;
+    --secundary-purple: #764ba2;
+
+    /* Colores navbar menu */
+    --navbar-blue: #3c4ba0;
+    --navbar-purple: #462364;
+
+    /* Colores de estado */
+    --success-green: #198754;
+    --success-light: #d1e7dd;
+    --danger-red: #dc3545;
+    --danger-light: #f8d7da;
+
+    /* Colores neutros */
+    --white: #ffffff;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-600: #6c757d;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+    --black: #000000;
+
+    /* Opacidades para colores blancos */
+    --white-50: rgba(255, 255, 255, 0.5);
+    --white-75: rgba(255, 255, 255, 0.75);
+    --white-80: rgba(255, 255, 255, 0.8);
+    --white-90: rgba(255, 255, 255, 0.9);
+    --white-98: rgba(255, 255, 255, 0.98);
+
+    /* Opacidades para otros colores */
+    --white-opacity-10: rgba(255, 255, 255, 0.1);
+    --white-opacity-20: rgba(255, 255, 255, 0.2);
+    --white-opacity-25: rgba(255, 255, 255, 0.25);
+    --white-opacity-90: rgba(255, 255, 255, 0.9);
+    --black-opacity-10: rgba(0, 0, 0, 0.1);
+    --black-opacity-20: rgba(0, 0, 0, 0.2);
+    --black-opacity-50: rgba(0, 0, 0, 0.5);
+    --gray-600-opacity-50: rgba(108, 117, 125, 0.5);
+    --primary-blue-opacity-05: rgba(13, 110, 253, 0.05);
+    --primary-blue-opacity-15: rgba(13, 110, 253, 0.15);
+    --secundary-opacity-03: rgba(102, 126, 234, 0.03);
+    --secundary-opacity-10: rgba(102, 126, 234, 0.1);
+    --secundary-opacity-15: rgba(102, 126, 234, 0.15);
+    --secundary-opacity-20: rgba(102, 126, 234, 0.2);
+    --secundary-purple-opacity-15: rgba(118, 75, 162, 0.15);
+    --navbar-blue-opacity-60: rgba(40, 60, 140, 0.6);
+    --navbar-purple-opacity-50: rgba(60, 30, 100, 0.5);
+    --navbar-blue-opacity-98: rgba(60, 75, 160, 0.98);
+    --navbar-purple-opacity-98: rgba(70, 35, 100, 0.98);
+    --navbar-white-opacity-40: rgba(255, 255, 255, 0.4);
+    --footer-border: rgba(255, 255, 255, 0.08);
+
+    /* Sombras */
+    --shadow-sm: 0 .125rem .25rem rgba(0, 0, 0, .075);
+    --shadow-md: 0 .5rem 1rem rgba(0, 0, 0, .15);
+    --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, .175);
+
+    /* Transiciones */
+    --transition-fast: 0.2s ease-in-out;
+    --transition-normal: 0.3s ease-in-out;
+    --transition-slow: 0.5s ease-in-out;
+}
+
+
+/* ============================================
+    2. ESTILOS GLOBALES
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--gray-800);
+    background-color: var(--gray-100);
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100vh;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Accesibilidad */
+*:focus-visible {
+    outline: 3px solid var(--primary-light);
+    outline-offset: 2px;
+}
+
+
+/* ============================================
+    3. LANDING PAGE
+   ============================================ */
+.landing-page {
+    background: linear-gradient(135deg, var(--secundary-mid) 0%, var(--secundary-purple) 100%);
+    background-attachment: fixed;
+    position: relative;
+    min-height: 100vh;
+}
+
+.landing-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 50%, var(--white-opacity-10) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, var(--white-opacity-10) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.landing-page main {
+    position: relative;
+    z-index: 1;
+}
+
+.landing-page .container {
+    color: var(--white);
+}
+
+.logo-container {
+    animation: pulse 2s ease-in-out infinite;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.landing-page h1 {
+    color: var(--white);
+    text-shadow: 0 2px 4px var(--black-opacity-10);
+}
+
+.landing-page .lead {
+    color: var(--white-90) !important;
+}
+
+.landing-page .text-muted {
+    color: var(--white-80) !important;
+}
+
+.landing-page .text-white-50 {
+    color: var(--white-75) !important;
+}
+
+.landing-page .text-primary {
+    color: var(--white) !important;
+}
+
+.landing-page .logo-container .text-primary {
+    color: var(--white) !important;
+}
+
+.feature-icon {
+    transition: transform var(--transition-normal);
+}
+
+.feature-icon:hover {
+    transform: translateY(-5px);
+}
+
+.landing-page .btn-primary {
+    background: var(--white);
+    color: var(--secundary-dark);
+    border: none;
+    font-weight: 600;
+    transition: all var(--transition-normal);
+}
+
+.landing-page .btn-primary:hover {
+    background: var(--gray-100);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px var(--black-opacity-20);
+}
+
+.landing-page .btn-outline-secondary {
+    border-color: var(--gray-600-opacity-50);
+    color: var(--gray-600);
+    background: var(--white);
+    transition: all var(--transition-normal);
+}
+
+.landing-page .btn-outline-secondary:hover {
+    background-color: var(--gray-200);
+    border-color: var(--gray-600);
+    color: var(--gray-800);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Formularios en landing page */
+.landing-page .form-control,
+.landing-page .input-group-text {
+    background-color: var(--gray-100);
+    border-color: var(--gray-300);
+    transition: all var(--transition-fast);
+}
+
+.landing-page .form-control:focus {
+    background-color: var(--white);
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 0.25rem var(--primary-blue-opacity-15);
+}
+
+.landing-page .input-group-text {
+    background-color: var(--gray-200);
+}
+
+.landing-page .input-group-lg .form-control {
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.landing-page .input-group-lg .input-group-text {
+    font-size: 1.5rem;
+    padding: 0.75rem 1rem;
+}
+
+/* Alertas en landing page */
+.landing-page #alert-container .alert {
+    animation: slideDown 0.4s ease-out;
+    border-radius: 0.75rem;
+}
+
+.landing-page #alert-container .alert-success {
+    background-color: var(--success-light);
+    color: var(--success-green);
+}
+
+.landing-page #alert-container .alert-danger {
+    background-color: var(--danger-light);
+    color: var(--danger-red);
+}
+
+
+/* ============================================
+    4. ANIMACIONES
+   ============================================ */
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Clases de animación */
+.fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.fade-in-delay-1 {
+    animation: fadeIn 0.8s ease-out 0.2s forwards;
+    opacity: 0;
+}
+
+.fade-in-delay-2 {
+    animation: fadeIn 0.8s ease-out 0.4s forwards;
+    opacity: 0;
+}
+
+.fade-in-delay-3 {
+    animation: fadeIn 0.8s ease-out 0.6s forwards;
+    opacity: 0;
+}
+
+.fade-in-delay-4 {
+    animation: fadeIn 0.8s ease-out 0.8s forwards;
+    opacity: 0;
+}
+
+.fade-in-delay-5 {
+    animation: fadeIn 0.8s ease-out 1s forwards;
+    opacity: 0;
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+
+/* ============================================
+    5. LOGIN PAGE
+   ============================================ */
+.login-card {
+    background: var(--white-98);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--white-opacity-20);
+    border-radius: 1.5rem;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.login-card .card-body {
+    position: relative;
+    z-index: 1;
+}
+
+.login-card h2 {
+    color: var(--gray-900);
+    font-weight: 700;
+}
+
+.login-card .text-muted {
+    color: var(--gray-600) !important;
+}
+
+.login-card:hover {
+    transform: none;
+}
+
+
+/* ============================================
+    6. MENU PAGE
+   ============================================ */
+.navbar-menu {
+    background: linear-gradient(135deg, var(--navbar-blue-opacity-98) 0%, var(--navbar-purple-opacity-98) 100%) !important;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    padding: 1.2rem 0;
+    box-shadow: 0 10px 40px var(--navbar-blue-opacity-60), 0 6px 25px var(--navbar-purple-opacity-50);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    border-bottom: none;
+    min-height: 70px;
+}
+
+.navbar-menu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--navbar-blue) 0%, var(--navbar-purple) 100%);
+    opacity: 0.95;
+    z-index: -1;
+}
+
+/* Espaciado para el contenido bajo el navbar fijo */
+body.landing-page main.min-vh-100 {
+    padding-top: 85px !important;
+}
+
+/* Ajuste específico para páginas con contenido centrado */
+body.landing-page main.min-vh-100.pt-4 {
+    padding-top: 75px !important;
+}
+
+.navbar-menu .navbar-brand {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--white) !important;
+    transition: all var(--transition-fast);
+    text-shadow: 0 2px 10px var(--black-opacity-50);
+    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 2;
+}
+
+.navbar-menu .navbar-brand:hover {
+    color: var(--white) !important;
+    transform: scale(1.08);
+    text-shadow: 0 4px 16px var(--navbar-white-opacity-40);
+}
+
+.navbar-menu .btn-outline-light {
+    border: 2px solid var(--white-opacity-90);
+    color: var(--white) !important;
+    background: var(--white-opacity-10);
+    font-weight: 600;
+    transition: all var(--transition-fast);
+    position: relative;
+    z-index: 2;
+}
+
+.navbar-menu .btn-outline-light:hover {
+    background: var(--white-opacity-25) !important;
+    border-color: var(--white) !important;
+    color: var(--white) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--navbar-white-opacity-40);
+}
+
+.menu-card {
+    background: var(--white-98);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--white-opacity-20);
+    border-radius: 1.5rem;
+    transition: all var(--transition-normal);
+    margin-bottom: 1.5rem;
+}
+
+.menu-card:hover {
+    transform: none;
+}
+
+/* Reducir espaciado vertical en páginas del menú */
+body.landing-page main.min-vh-100 .container {
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+}
+
+body.landing-page main.min-vh-100 .py-2 {
+    padding-top: 0 !important;
+    padding-bottom: 0.5rem !important;
+}
+
+.btn-menu {
+    background: linear-gradient(135deg, var(--secundary-opacity-10) 0%, var(--secundary-purple-opacity-15) 100%);
+    border: 2px solid var(--secundary-mid);
+    color: var(--secundary-dark);
+    font-weight: 600;
+    border-radius: 1rem;
+    transition: all var(--transition-normal);
+}
+
+.btn-menu:hover {
+    background: linear-gradient(135deg, var(--secundary-mid) 0%, var(--secundary-dark) 100%);
+    color: var(--white);
+    border-color: var(--secundary-dark);
+    transform: translateX(5px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-menu i.float-end {
+    transition: transform var(--transition-fast);
+}
+
+.btn-menu:hover i.float-end {
+    transform: translateX(5px);
+}
+
+
+/* ============================================
+    7. CARDS & CONTAINERS
+   ============================================ */
+.card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.card-header {
+    background-color: var(--white);
+    border-bottom: 2px solid var(--gray-200);
+    font-weight: 600;
+    border-radius: 1rem 1rem 0 0 !important;
+}
+
+
+/* ============================================
+    8. BOTONES
+   ============================================ */
+.btn {
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all var(--transition-normal);
+    padding: 0.5rem 1.5rem;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 100%);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success-green) 0%, var(--success-green) 100%);
+    border: none;
+}
+
+.btn-lg {
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+}
+
+#btn-sesion {
+    background: linear-gradient(135deg, var(--secundary-mid) 0%, var(--secundary-dark) 100%);
+    color: var(--white);
+    border: none;
+}
+
+
+/* ============================================
+    9. FORMULARIOS
+   ============================================ */
+.form-control,
+.form-select {
+    border-radius: 0.5rem;
+    border: 2px solid var(--gray-300);
+    transition: all var(--transition-fast);
+    padding: 0.75rem 1rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 0.25rem var(--primary-blue-opacity-15);
+}
+
+.input-group-text {
+    background-color: var(--gray-200);
+    border: 2px solid var(--gray-300);
+    border-right: none;
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.input-group .form-control {
+    border-left: none;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 0.5rem;
+}
+
+
+/* ============================================
+    10. NAVBAR
+   ============================================ */
+.navbar {
+    box-shadow: var(--shadow-sm);
+    background: var(--white) !important;
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--primary-blue) !important;
+    transition: all var(--transition-fast);
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+}
+
+.nav-link {
+    font-weight: 500;
+    color: var(--gray-700) !important;
+    transition: color var(--transition-fast);
+    padding: 0.5rem 1rem !important;
+}
+
+.nav-link:hover {
+    color: var(--primary-blue) !important;
+}
+
+.nav-link.active {
+    color: var(--primary-blue) !important;
+    font-weight: 600;
+}
+
+
+/* ============================================
+    11. SALDO Y BALANCE
+   ============================================ */
+.balance-display {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 100%);
+    color: var(--white);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.balance-display::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, var(--white-opacity-10) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+
+.balance-amount {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 1rem 0;
+    position: relative;
+    z-index: 1;
+}
+
+.balance-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Caja de saldo actual */
+.saldo-actual-box {
+    background: linear-gradient(135deg, var(--secundary-opacity-15) 0%, var(--secundary-purple-opacity-15) 100%);
+    border: 2px solid var(--secundary-mid);
+    border-radius: 1.25rem;
+    padding: 2rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px var(--secundary-opacity-20);
+    transition: all var(--transition-normal);
+}
+
+.saldo-actual-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, var(--secundary-opacity-10) 0%, transparent 70%);
+    animation: rotate 15s linear infinite;
+}
+
+.saldo-actual-box .text-center {
+    position: relative;
+    z-index: 1;
+}
+
+.saldo-icon {
+    font-size: 2.5rem;
+    color: var(--secundary-mid);
+    margin-bottom: 1rem;
+    display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.saldo-amount {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--secundary-dark);
+    text-shadow: 0 2px 4px var(--black-opacity-10);
+    letter-spacing: -1px;
+}
+
+/* Clase para etiquetas de saldo */
+.saldo-label {
+    letter-spacing: 1px;
+    font-weight: 600;
+    color: var(--gray-600);
+}
+
+/* Clase para color de saldo en sendMoney */
+.saldo-amount-sendmoney {
+    color: var(--secundary-mid);
+}
+
+
+/* ============================================
+    12. TRANSACCIONES
+   ============================================ */
+.transaction-item {
+    background: var(--white);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: 0.75rem;
+    border-left: 4px solid transparent;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+}
+
+.transaction-item:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateX(5px);
+}
+
+.transaction-item.deposit {
+    border-left-color: var(--success-green);
+}
+
+.transaction-item.send {
+    border-left-color: var(--danger-red);
+}
+
+.transaction-amount {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.transaction-amount.positive {
+    color: var(--success-green);
+}
+
+.transaction-amount.negative {
+    color: var(--danger-red);
+}
+
+.transaction-date {
+    font-size: 0.875rem;
+    color: var(--gray-600);
+}
+
+.transaction-type {
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.transaction-list {
+    margin: 0 -1.5rem;
+}
+
+.transaction-list .list-group-item {
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid var(--gray-200);
+    padding: 1.25rem 1.5rem;
+    transition: all var(--transition-fast);
+}
+
+.transaction-list .list-group-item:last-child {
+    border-bottom: none;
+}
+
+.transaction-list .list-group-item:hover {
+    background-color: var(--secundary-opacity-03);
+    transform: translateX(5px);
+}
+
+.transaction-list .list-group-item .text-muted {
+    color: var(--gray-600) !important;
+}
+
+.transaction-list .list-group-item small.text-muted {
+    color: var(--gray-600) !important;
+}
+
+/* Elementos para las estadísticas de ingresos/egresos */
+.stat-icon-container {
+    width: 60px;
+    height: 60px;
+}
+
+.stat-icon {
+    font-size: 2rem;
+}
+
+.stat-label {
+    letter-spacing: 1px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--gray-600);
+}
+
+.icon-secundary {
+    color: var(--secundary-mid);
+}
+
+
+/* ============================================
+    13. CONTACTOS
+   ============================================ */
+.contact-card {
+    background: var(--white);
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    border: 2px solid var(--gray-200);
+    transition: all var(--transition-normal);
+    cursor: pointer;
+}
+
+.contact-card:hover {
+    border-color: var(--primary-blue);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+}
+
+.contact-card.selected {
+    border-color: var(--primary-blue);
+    background-color: var(--primary-blue-opacity-05);
+}
+
+.contact-card small {
+    color: var(--gray-600) !important;
+}
+
+.contact-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-blue) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--white);
+    font-weight: 600;
+}
+
+/* Botones de acción en tarjetas de contacto */
+.btn-enviar-dinero {
+    background: var(--white) !important;
+    border: 2px solid var(--success-green) !important;
+    color: var(--success-green) !important;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    transition: all var(--transition-fast);
+}
+
+.btn-enviar-dinero:hover {
+    background: var(--success-green) !important;
+    border-color: var(--success-green) !important;
+    color: var(--white) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(25, 135, 84, 0.25);
+}
+
+.btn-editar-contacto {
+    background: var(--white) !important;
+    border: 2px solid var(--primary-blue) !important;
+    color: var(--primary-blue) !important;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    transition: all var(--transition-fast);
+}
+
+.btn-editar-contacto:hover {
+    background: var(--primary-blue) !important;
+    border-color: var(--primary-blue) !important;
+    color: var(--white) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px var(--primary-blue-opacity-15);
+}
+
+.btn-eliminar-contacto {
+    background: var(--white) !important;
+    border: 2px solid var(--danger-red) !important;
+    color: var(--danger-red) !important;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    transition: all var(--transition-fast);
+}
+
+.btn-eliminar-contacto:hover {
+    background: var(--danger-red) !important;
+    border-color: var(--danger-red) !important;
+    color: var(--white) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(220, 53, 69, 0.25);
+}
+
+
+/* ============================================
+    14. ALERTAS
+   ============================================ */
+.alert {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-sm);
+    animation: slideDown 0.3s ease-out;
+}
+
+.alert-success {
+    background-color: var(--success-light);
+    color: var(--success-green);
+    border-left: 4px solid var(--success-green);
+}
+
+.alert-danger {
+    background-color: var(--danger-light);
+    color: var(--danger-red);
+    border-left: 4px solid var(--danger-red);
+}
+
+
+/* ============================================
+    15. MODALES
+   ============================================ */
+.modal-content {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border-radius: 1rem 1rem 0 0;
+    border-bottom: none;
+}
+
+.modal-header .btn-close {
+    filter: brightness(0) invert(1);
+}
+
+.modal-footer {
+    border-top: 2px solid var(--gray-200);
+}
+
+
+/* ============================================
+    16. BADGES & PAGINACIÓN
+   ============================================ */
+.badge {
+    font-weight: 500;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+}
+
+.badge-gradient {
+    background: linear-gradient(135deg, var(--secundary-mid) 0%, var(--secundary-dark) 100%);
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.pagination .page-link {
+    color: var(--secundary-mid);
+    border-color: var(--gray-300);
+    transition: all var(--transition-fast);
+    font-weight: 500;
+}
+
+.pagination .page-link:hover {
+    background-color: var(--secundary-opacity-10);
+    border-color: var(--secundary-mid);
+    color: var(--secundary-dark);
+}
+
+.pagination .page-item.active .page-link {
+    background: linear-gradient(135deg, var(--secundary-mid) 0%, var(--secundary-dark) 100%);
+    border-color: var(--secundary-mid);
+    color: var(--white);
+}
+
+.pagination .page-item.disabled .page-link {
+    background-color: var(--gray-100);
+    border-color: var(--gray-300);
+    color: var(--gray-600);
+}
+
+
+/* ============================================
+    17. SPINNERS
+   ============================================ */
+.spinner-border {
+    border-width: 3px;
+}
+
+
+/* ============================================
+    18. UTILIDADES
+   ============================================ */
+.text-balance {
+    color: var(--primary-blue);
+    font-weight: 700;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 100%);
+}
+
+.shadow-custom {
+    box-shadow: var(--shadow-md);
+}
+
+.rounded-custom {
+    border-radius: 1rem;
+}
+
+
+/* ============================================
+    19. RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+    .balance-amount {
+        font-size: 2rem;
+    }
+
+    .saldo-amount {
+        font-size: 2rem;
+    }
+
+    .btn-lg {
+        padding: 0.625rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    .navbar-brand {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .balance-amount {
+        font-size: 1.75rem;
+    }
+
+    .saldo-amount {
+        font-size: 2rem;
+    }
+
+    .saldo-icon {
+        font-size: 2rem;
+    }
+
+    .saldo-actual-box {
+        padding: 1.5rem 1rem;
+    }
+
+    .transaction-item {
+        padding: 0.75rem;
+    }
+
+    .contact-card {
+        padding: 1rem;
+    }
+
+    .transaction-list {
+        margin: 0 -1rem;
+    }
+
+    .transaction-list .list-group-item {
+        padding: 1rem;
+    }
+}
+
+
+/* ============================================
+    20. CLASES ADICIONALES PARA JAVASCRIPT
+   ============================================ */
+.empty-state-icon {
+    font-size: 3rem;
+    color: var(--gray-400);
+}
+
+.empty-state-icon-large {
+    font-size: 4rem;
+    color: var(--gray-300);
+}
+
+.stat-circle-icon {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+}
+
+
+/* ============================================
+    21. FOOTER
+   ============================================ */
+.footer-minimal {
+    background: transparent;
+    border-top: 1px solid var(--footer-border);
+    margin-top: 1rem;
+}
+
+.footer-minimal p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.text-white-75 {
+    color: var(--white-75) !important;
+}
+
+.text-white-50 {
+    color: var(--white-50) !important;
+}
