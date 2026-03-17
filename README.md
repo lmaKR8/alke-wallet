@@ -21,10 +21,10 @@
 ## Autor
 
 **Desarrollado por**: Leandro Marchant A.
-**Tipo**: Proyecto Educativo
-**Módulo**: Desarrollo Web con Django — Fundamentos y Modelos
-**Programa**: Fullstack Python — Talento Digital
-**Año**: 2026
+ **Tipo**: Proyecto Educativo
+ **Módulo**: Desarrollo Web con Django — Fundamentos y Modelos
+ **Programa**: Fullstack Python — Talento Digital
+ **Año**: 2026
 
 ---
 
