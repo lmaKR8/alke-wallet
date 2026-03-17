@@ -16,14 +16,14 @@ class DepositForm(forms.Form):
 
     amount = forms.DecimalField(
         label='Monto a depositar',
-        min_value=Decimal('0.01'),
+        min_value=Decimal('1'),
         max_digits=12,
-        decimal_places=2,
+        decimal_places=0,
         widget=forms.NumberInput(attrs={
             'class': 'form-control form-control-lg',
-            'placeholder': '0.00',
-            'step': '0.01',
-            'min': '0.01',
+            'placeholder': '1.000',
+            'step': '1',
+            'min': '1',
         }),
     )
 
@@ -38,6 +38,6 @@ class DepositForm(forms.Form):
             ValidationError: Si el monto no es mayor a cero.
         """
         amount = self.cleaned_data.get('amount')
-        if amount is not None and amount <= 0:
+        if amount is not None and amount < 1:
             raise forms.ValidationError('El monto debe ser mayor a cero.')
         return amount

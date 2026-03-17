@@ -1,0 +1,112 @@
+[
+  {
+    "model": "contacts.contact",
+    "pk": 1,
+    "fields": {
+      "owner": 1,
+      "contact_user": 2,
+      "alias": "El tío",
+      "created_at": "2025-06-15T10:30:00Z"
+    }
+  },
+  {
+    "model": "contacts.contact",
+    "pk": 2,
+    "fields": {
+      "owner": 1,
+      "contact_user": 3,
+      "alias": "Gandalf",
+      "created_at": "2025-06-16T14:00:00Z"
+    }
+  },
+  {
+    "model": "contacts.contact",
+    "pk": 3,
+    "fields": {
+      "owner": 1,
+      "contact_user": 4,
+      "alias": "Pelao Loco",
+      "created_at": "2025-06-17T11:15:00Z"
+    }
+  },
+  {
+    "model": "contacts.contact",
+    "pk": 4,
+    "fields": {
+      "owner": 2,
+      "contact_user": 1,
+      "alias": "Mi sobrino",
+      "created_at": "2025-06-15T10:45:00Z"
+    }
+  },
+  {
+    "model": "contacts.contact",
+    "pk": 5,
+    "fields": {
+      "owner": 2,
+      "contact_user": 5,
+      "alias": "Trabajo",
+      "created_at": "2025-06-18T09:20:00Z"
+    }
+  },
+  {
+    "model": "contacts.contact",
+    "pk": 6,
+    "fields": {
+      "owner": 3,
+      "contact_user": 1,
+      "alias": "Hobbit favorito",
+      "created_at": "2025-06-16T14:30:00Z"
+    }
+  },
+  {
+    "model": "contacts.contact",
+    "pk": 7,
+    "fields": {
+      "owner": 3,
+      "contact_user": 6,
+      "alias": "Aragorn",
+      "created_at": "2025-06-19T16:00:00Z"
+    }
+  },
+  {
+    "model": "contacts.contact",
+    "pk": 8,
+    "fields": {
+      "owner": 4,
+      "contact_user": 1,
+      "alias": "Primo",
+      "created_at": "2025-06-17T11:45:00Z"
+    }
+  },
+  {
+    "model": "contacts.contact",
+    "pk": 9,
+    "fields": {
+      "owner": 4,
+      "contact_user": 7,
+      "alias": "Pippin",
+      "created_at": "2025-06-20T13:30:00Z"
+    }
+  },
+  {
+    "model": "contacts.contact",
+    "pk": 10,
+    "fields": {
+      "owner": 5,
+      "contact_user": 2,
+      "alias": "Bilbo",
+      "created_at": "2025-06-18T09:50:00Z"
+    }
+  },
+  {
+    "model": "contacts.contact",
+    "pk": 11,
+    "fields": {
+      "owner": 5,
+      "contact_user": 6,
+      "alias": "Ranger",
+      "created_at": "2025-06-21T10:00:00Z"
+    }
+  }
+]

@@ -1,19 +1,27 @@
-"""
-Formulario de envío de dinero para Alke Wallet.
-"""
+"""Formularios de la app contacts — alias de contacto y envío de dinero."""
 
 from decimal import Decimal
 
 from django import forms
 
 
-class SendMoneyForm(forms.Form):
-    """
-    Formulario para enviar dinero a otro usuario.
+class ContactAliasForm(forms.Form):
+    """Formulario para crear o editar el alias de un contacto."""
 
-    Valida que el monto sea positivo y permite un mensaje opcional
-    como descripción de la transferencia.
-    """
+    alias = forms.CharField(
+        label='Alias (opcional)',
+        required=False,
+        max_length=60,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control form-control-lg',
+            'placeholder': 'Ej: Pelao Loco, Mamá, Trabajo...',
+            'autocomplete': 'off',
+        }),
+    )
+
+
+class SendMoneyForm(forms.Form):
+    """Formulario para enviar dinero a otro usuario."""
 
     amount = forms.DecimalField(
         label='Monto a enviar',
@@ -38,15 +46,6 @@ class SendMoneyForm(forms.Form):
     )
 
     def clean_amount(self):
-        """
-        Valida que el monto sea positivo.
-
-        Returns:
-            Decimal: El monto validado.
-
-        Raises:
-            ValidationError: Si el monto no es mayor a cero.
-        """
         amount = self.cleaned_data.get('amount')
         if amount is not None and amount <= 0:
             raise forms.ValidationError('El monto debe ser mayor a cero.')

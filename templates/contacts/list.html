@@ -1,116 +1,179 @@
 {% extends 'base.html' %}
+{% load wallet_filters %}
 {% block footer %}{% endblock %}
 {% block body_class %}no-footer{% endblock %}
 {% block title %}Enviar Dinero — Alke Wallet{% endblock %}
+
 {% block content %}
 <main class="min-vh-100 pt-4">
   <div class="container py-3">
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-7">
+
         <!-- Encabezado -->
         <div class="text-center mb-4 fade-in">
           <h1 class="text-white fw-bold mb-2">Enviar Dinero</h1>
-          <p class="text-white-50">Busca un usuario para transferirle fondos</p>
+          <p class="text-white-50">Transfiere fondos a tus contactos</p>
         </div>
 
-        <!-- Buscador -->
-        <div class="card shadow-lg menu-card mb-4 fade-in-delay-1">
+        <!-- Card principal -->
+        <div class="card shadow-lg menu-card fade-in-delay-1">
           <div class="card-body p-4">
-            <form method="get" action="{% url 'contact_list' %}">
-              <label for="q" class="form-label fw-bold">
-                Buscar contacto
-              </label>
+
+            <!-- Saldo disponible -->
+            {% if sender_account %}
+            <div class="saldo-actual-box mb-4">
+              <div class="text-center">
+                <small class="d-block mb-2 text-uppercase saldo-label">Saldo disponible</small>
+                <div class="saldo-amount saldo-amount-sendmoney">
+                  {{ sender_account.currency.currency_symbol }} {{ sender_account.balance|miles }}
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            <!-- Buscador de contactos -->
+            <form method="get" action="{% url 'contact_list' %}" class="mb-3">
+              <label class="form-label fw-bold">Buscar contacto</label>
               <div class="input-group input-group-lg">
-                <span class="input-group-text">
-                  <i class="bi bi-search"></i>
-                </span>
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
                 <input
                   type="text"
                   class="form-control"
-                  id="q"
                   name="q"
                   value="{{ search_term }}"
-                  placeholder="Buscar por nombre o email..."
+                  placeholder="Buscar por nombre o alias..."
                   autocomplete="off"
                 />
-                <button type="submit" class="btn btn-primary">Buscar</button>
               </div>
-              <small class="form-text text-muted">
-                <i class="bi bi-exclamation-circle me-1"></i>
-                Busca entre todos los usuarios registrados
-              </small>
             </form>
-          </div>
-        </div>
 
-        <!-- Resultados de búsqueda -->
-        <div class="card shadow-lg menu-card fade-in-delay-2">
-          <div class="card-body p-4">
+            <!-- Botón Agregar contacto -->
+            <a href="{% url 'add_contact' %}" class="btn btn-menu w-100 text-start mb-4 px-4 py-3">
+              <i class="bi bi-person-plus-fill me-2"></i>
+              Agregar nuevo contacto
+              <i class="bi bi-arrow-right float-end mt-1"></i>
+            </a>
+
+            <!-- Lista de contactos -->
             <h6 class="fw-bold mb-3">
               <i class="bi bi-people-fill me-2"></i>
               {% if search_term %}
-                {% if users %} {{ users.count }} resultado{% if users.count != 1 %}s{% endif %} para "{{ search_term }}" {% else %} Sin resultados para "{{ search_term }}" {% endif %}
+                {% if contacts %}
+                  {{ contacts.count }} resultado{% if contacts.count != 1 %}s{% endif %} para "{{ search_term }}"
+                {% else %}
+                  Sin resultados para "{{ search_term }}"
+                {% endif %}
               {% else %}
-                Todos los usuarios ({{ users.count }})
+                Contactos recientes
               {% endif %}
             </h6>
 
-            {% if users %} {% for u in users %}
-            <div
-              class="contact-card d-flex align-items-center p-3 mb-2 rounded-3"
-            >
-              <!-- Avatar -->
-              <div class="contact-avatar me-3">
-                <div
-                  class="rounded-circle bg-primary bg-opacity-15 d-inline-flex align-items-center justify-content-center"
-                  style="width: 52px; height: 52px"
-                >
-                  <span class="fw-bold text-primary fs-5">
-                    {{ u.user_name|first|upper }}
-                  </span>
+            {% if contacts %}
+              {% for c in contacts %}
+              <div class="contact-card d-flex align-items-center p-3 mb-2 rounded-3">
+                <!-- Avatar -->
+                <div class="contact-avatar me-3">
+                  <i class="bi bi-person-fill fs-4"></i>
+                </div>
+
+                <!-- Info del contacto -->
+                <div class="flex-grow-1">
+                  <div class="fw-bold">{{ c.contact_user.user_name }}</div>
+                  {% if c.alias %}
+                    <span class="contact-alias-badge">{{ c.alias }}</span>
+                  {% endif %}
+                  <small class="text-muted d-block">{{ c.contact_user.email }}</small>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="d-flex gap-2 ms-2">
+                  <!-- Enviar dinero -->
+                  <a href="{% url 'send_money' c.contact_user.id %}"
+                     class="btn btn-enviar-dinero rounded-2"
+                     title="Enviar dinero">
+                    <i class="bi bi-send-fill"></i>
+                  </a>
+
+                  <!-- Editar alias -->
+                  <a href="{% url 'edit_contact' c.pk %}"
+                     class="btn btn-editar-contacto rounded-2"
+                     title="Editar alias">
+                    <i class="bi bi-pencil-fill"></i>
+                  </a>
+
+                  <!-- Eliminar (abre modal de confirmación) -->
+                  <button type="button"
+                          class="btn btn-eliminar-contacto rounded-2"
+                          title="Eliminar contacto"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modal_delete_{{ c.pk }}">
+                    <i class="bi bi-trash-fill"></i>
+                  </button>
                 </div>
               </div>
+              {% endfor %}
 
-              <!-- Info del usuario -->
-              <div class="flex-grow-1">
-                <div class="fw-bold">{{ u.user_name }}</div>
-                <small class="text-muted">{{ u.email }}</small>
+            {% else %}
+              <div class="text-center py-4 text-muted">
+                <i class="bi bi-people fs-1 d-block mb-2"></i>
+                {% if search_term %}
+                  <p class="mb-0">No se encontraron contactos con ese nombre o alias.</p>
+                {% else %}
+                  <p class="mb-0">Todavía no tienes contactos guardados.</p>
+                  <a href="{% url 'add_contact' %}" class="btn btn-primary btn-sm mt-3 rounded-pill px-4">
+                    <i class="bi bi-person-plus-fill me-1"></i>Agregar primer contacto
+                  </a>
+                {% endif %}
               </div>
-
-              <!-- Botón Enviar -->
-              <div class="ms-2">
-                <a
-                  href="{% url 'send_money' u.id %}"
-                  class="btn btn-primary btn-sm rounded-pill px-3"
-                >
-                  <i class="bi bi-send-fill me-1"></i>
-                  Enviar
-                </a>
-              </div>
-            </div>
-            {% endfor %} {% else %}
-            <div class="text-center py-4 text-muted">
-              <i class="bi bi-person-x fs-1 d-block mb-2"></i>
-              <p class="mb-0">
-                No se encontraron usuarios con ese nombre o email.
-              </p>
-            </div>
             {% endif %}
+
           </div>
         </div>
 
-        <!-- Botón Volver -->
-        <div class="text-center mt-3">
-          <a
-            href="{% url 'dashboard' %}"
-            class="btn btn-outline-secondary btn-sm rounded-pill px-4"
-          >
-            <i class="bi bi-arrow-left me-1"></i>
-            Volver al menú
+        <!-- Volver al menú -->
+        <div class="text-center mt-3 fade-in-delay-2">
+          <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm rounded-pill px-4">
+            <i class="bi bi-arrow-left me-1"></i>Volver al menú
           </a>
         </div>
+
       </div>
     </div>
   </div>
+
+
 </main>
+{% endblock %}
+
+{% block body_modals %}
+  {% if contacts %}
+    {% for c in contacts %}
+    <div class="modal fade" id="modal_delete_{{ c.pk }}" tabindex="-1" aria-hidden="true" aria-labelledby="modalLabel{{ c.pk }}">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel{{ c.pk }}">Eliminar contacto</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            ¿Seguro que quieres eliminar a
+            <strong>{{ c.display_name }}</strong> de tus contactos?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+            <form method="post" action="{% url 'delete_contact' c.pk %}" style="display: inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">
+                <i class="bi bi-trash-fill me-1"></i>Eliminar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% endif %}
 {% endblock %}

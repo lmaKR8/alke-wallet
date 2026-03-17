@@ -1,28 +1,29 @@
 {% extends 'base.html' %}
-{% block footer %}{% endblock %}
-{% block body_class %}no-footer{% endblock %} {% block title %}Enviar a {{ receiver.user_name }} —
-Alke Wallet{% endblock %} {% block content %}
 {% load wallet_filters %}
+{% block footer %}{% endblock %}
+{% block body_class %}no-footer{% endblock %}
+{% block title %}Enviar a {{ receiver.user_name }} — Alke Wallet{% endblock %}
+
+{% block content %}
 <main class="min-vh-100 pt-4">
   <div class="container py-3">
     <div class="row justify-content-center">
       <div class="col-md-7 col-lg-6">
+
         <!-- Encabezado -->
         <div class="text-center mb-4 fade-in">
-          <h1 class="text-white fw-bold mb-2">Enviar Dinero</h1>
-          <p class="text-white-50">Transfiere fondos a tus contactos</p>
+          <h1 class="text-white fw-bold mb-2">Confirmar Envío</h1>
+          <p class="text-white-50">Transfiere fondos a tu contacto</p>
         </div>
 
-        <!-- Card del formulario -->
         <div class="card shadow-lg menu-card fade-in-delay-1">
           <div class="card-body p-4">
+
             <!-- Saldo disponible -->
             {% if sender_account %}
             <div class="saldo-actual-box mb-4">
               <div class="text-center">
-                <small class="d-block mb-2 text-uppercase saldo-label"
-                  >Saldo disponible</small
-                >
+                <small class="d-block mb-2 text-uppercase saldo-label">Saldo disponible</small>
                 <div class="saldo-amount saldo-amount-sendmoney">
                   {{ sender_account.currency.currency_symbol }} {{ sender_account.balance|miles }}
                 </div>
@@ -32,34 +33,26 @@ Alke Wallet{% endblock %} {% block content %}
 
             <!-- Info del receptor -->
             <div class="d-flex align-items-center p-3 mb-4 rounded-3 bg-light">
-              <div
-                class="rounded-circle bg-primary bg-opacity-15 d-inline-flex align-items-center justify-content-center me-3"
-                style="width: 52px; height: 52px; flex-shrink: 0"
-              >
-                <span class="fw-bold text-primary fs-5">
-                  {{ receiver.user_name|first|upper }}
-                </span>
+              <div class="contact-avatar me-3">
+                <i class="bi bi-person-fill fs-4"></i>
               </div>
               <div>
                 <div class="fw-bold">{{ receiver.user_name }}</div>
-                <small class="text-muted">{{ receiver.email }}</small>
+                {% if contact_obj and contact_obj.alias %}
+                  <small class="text-muted">{{ contact_obj.alias }}</small>
+                {% else %}
+                  <small class="text-muted">{{ receiver.email }}</small>
+                {% endif %}
               </div>
             </div>
 
             <!-- Formulario de envío -->
-            <form
-              method="post"
-              action="{% url 'send_money' receiver.id %}"
-              novalidate
-            >
+            <form method="post" action="{% url 'send_money' receiver.id %}" novalidate>
               {% csrf_token %}
 
               <!-- Monto -->
               <div class="mb-3">
-                <label
-                  for="{{ form.amount.id_for_label }}"
-                  class="form-label fw-bold"
-                >
+                <label for="{{ form.amount.id_for_label }}" class="form-label fw-bold">
                   Monto a enviar
                 </label>
                 <div class="input-group input-group-lg">
@@ -69,51 +62,39 @@ Alke Wallet{% endblock %} {% block content %}
                   {{ form.amount }}
                 </div>
                 {% if form.amount.errors %}
-                <div class="text-danger small mt-1">
-                  {{ form.amount.errors|join:', ' }}
-                </div>
+                <div class="text-danger small mt-1">{{ form.amount.errors|join:', ' }}</div>
                 {% endif %}
               </div>
 
               <!-- Mensaje opcional -->
               <div class="mb-4">
-                <label
-                  for="{{ form.message.id_for_label }}"
-                  class="form-label fw-bold"
-                >
+                <label for="{{ form.message.id_for_label }}" class="form-label fw-bold">
                   Mensaje (opcional)
                 </label>
-                {{ form.message }} {% if form.message.errors %}
-                <div class="text-danger small mt-1">
-                  {{ form.message.errors|join:', ' }}
-                </div>
+                {{ form.message }}
+                {% if form.message.errors %}
+                <div class="text-danger small mt-1">{{ form.message.errors|join:', ' }}</div>
                 {% endif %}
               </div>
 
               <!-- Botón Enviar -->
               <div class="d-grid">
-                <button
-                  type="submit"
-                  class="btn btn-primary btn-lg rounded-pill"
-                >
-                  <i class="bi bi-send-fill me-2"></i>
-                  Confirmar Envío
+                <button type="submit" class="btn btn-primary btn-lg rounded-pill">
+                  <i class="bi bi-send-fill me-2"></i>Confirmar Envío
                 </button>
               </div>
             </form>
+
           </div>
         </div>
 
-        <!-- Botón Volver -->
+        <!-- Volver -->
         <div class="text-center mt-3">
-          <a
-            href="{% url 'contact_list' %}"
-            class="btn btn-outline-secondary btn-sm rounded-pill px-4"
-          >
-            <i class="bi bi-arrow-left me-1"></i>
-            Volver a búsqueda
+          <a href="{% url 'contact_list' %}" class="btn btn-outline-secondary btn-sm rounded-pill px-4">
+            <i class="bi bi-arrow-left me-1"></i>Volver a contactos
           </a>
         </div>
+
       </div>
     </div>
   </div>

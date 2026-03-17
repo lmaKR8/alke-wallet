@@ -103,10 +103,11 @@ def deposit_view(request):
             # Actualizar el balance de la cuenta
             account.deposit(amount)
 
+            amount_fmt = '{:,.0f}'.format(amount).replace(',', '.')
             messages.success(
                 request,
                 f'Depósito de {account.currency.currency_symbol} '
-                f'{amount:,.2f} realizado correctamente.'
+                f'{amount_fmt} realizado correctamente.'
             )
             return redirect('dashboard')
 

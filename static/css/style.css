@@ -914,6 +914,18 @@ body.landing-page main.min-vh-100 .py-2 {
     color: var(--gray-600) !important;
 }
 
+.contact-alias-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    background: var(--primary-blue-opacity-05);
+    border: 1px solid var(--primary-blue);
+    border-radius: 20px;
+    padding: 1px 8px;
+    margin-bottom: 2px;
+}
+
 .contact-avatar {
     width: 50px;
     height: 50px;
@@ -1006,10 +1018,20 @@ body.landing-page main.min-vh-100 .py-2 {
 /* ============================================
     15. MODALES
    ============================================ */
+.modal {
+    pointer-events: auto;
+    z-index: 2000 !important;
+}
+
+.modal-backdrop {
+    pointer-events: auto;
+}
+
 .modal-content {
     border: none;
     border-radius: 1rem;
     box-shadow: var(--shadow-lg);
+    pointer-events: auto;
 }
 
 .modal-header {
@@ -1017,14 +1039,26 @@ body.landing-page main.min-vh-100 .py-2 {
     color: var(--white);
     border-radius: 1rem 1rem 0 0;
     border-bottom: none;
+    pointer-events: auto;
 }
 
 .modal-header .btn-close {
     filter: brightness(0) invert(1);
+    pointer-events: auto;
+}
+
+.modal-body {
+    pointer-events: auto;
 }
 
 .modal-footer {
     border-top: 2px solid var(--gray-200);
+    pointer-events: auto;
+}
+
+.modal-footer button,
+.modal-footer form {
+    pointer-events: auto;
 }
 
 
