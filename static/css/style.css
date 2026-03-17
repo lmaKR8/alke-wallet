@@ -381,11 +381,9 @@ html {
     6. MENU
    ============================================ */
 .navbar-menu {
-    background: linear-gradient(135deg, var(--navbar-blue-opacity-98) 0%, var(--navbar-purple-opacity-98) 100%) !important;
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
+    background: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
     padding: 1.2rem 0;
-    box-shadow: 0 10px 40px var(--navbar-blue-opacity-60), 0 6px 25px var(--navbar-purple-opacity-50);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0);
     position: fixed;
     top: 0;
     left: 0;
@@ -393,18 +391,6 @@ html {
     z-index: 1000;
     border-bottom: none;
     min-height: 70px;
-}
-
-.navbar-menu::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, var(--navbar-blue) 0%, var(--navbar-purple) 100%);
-    opacity: 0.95;
-    z-index: -1;
 }
 
 /* Espaciado para el contenido bajo el navbar fijo */
@@ -607,7 +593,7 @@ body.landing-page main.min-vh-100 .py-2 {
 /* ============================================
     10. NAVBAR
    ============================================ */
-.navbar {
+.navbar:not(.navbar-menu) {
     box-shadow: var(--shadow-sm);
     background: var(--white) !important;
     padding: 1rem 0;
@@ -707,7 +693,7 @@ body.landing-page main.min-vh-100 .py-2 {
     background: linear-gradient(135deg, var(--secundary-opacity-15) 0%, var(--secundary-purple-opacity-15) 100%);
     border: 2px solid var(--secundary-mid);
     border-radius: 1.25rem;
-    padding: 2rem 1.5rem;
+    padding: 1.75rem 1.5rem;
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 15px var(--secundary-opacity-20);
@@ -739,7 +725,7 @@ body.landing-page main.min-vh-100 .py-2 {
 }
 
 .saldo-amount {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
     color: var(--secundary-dark);
     text-shadow: 0 2px 4px var(--black-opacity-10);
@@ -1197,7 +1183,7 @@ body.landing-page main.min-vh-100 .py-2 {
     21. FOOTER
    ============================================ */
 .footer-minimal {
-    background: transparent;
+    background: linear-gradient(135deg, var(--navbar-blue) 0%, var(--navbar-purple) 100%);
     border-top: 1px solid var(--footer-border);
     position: fixed;
     bottom: 0;
@@ -1209,6 +1195,11 @@ body.landing-page main.min-vh-100 .py-2 {
 /* Espacio para que el footer fijo no tape el contenido */
 main {
     padding-bottom: 60px;
+}
+
+/* Páginas sin footer: sin padding extra */
+.no-footer main {
+    padding-bottom: 0;
 }
 
 .footer-minimal p {

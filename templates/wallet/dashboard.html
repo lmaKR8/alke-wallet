@@ -1,21 +1,21 @@
 {% extends 'base.html' %} {% block title %}Mi Billetera — Alke Wallet{% endblock %} {% block content %}
 {% load wallet_filters %}
-<main class="min-vh-100 pt-4">
-  <div class="container py-3">
+<main class="min-vh-100 pt-2">
+  <div class="container py-2">
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-6">
         <!-- Encabezado -->
-        <h1 class="text-center mb-4 text-white fw-bold fade-in-delay-1">
+        <h1 class="text-center mb-3 text-white fw-bold fade-in-delay-1">
           Resumen de mi cuenta
         </h1>
 
         <!-- Card de saldo -->
         {% if primary_account %}
-        <div class="card shadow-lg menu-card mb-4 fade-in-delay-2">
-          <div class="card-body p-4">
+        <div class="card shadow-lg menu-card mb-3 fade-in-delay-2">
+          <div class="card-body p-3">
             <div class="saldo-actual-box mb-1">
               <div class="text-center">
-                <small class="d-block mb-2 text-uppercase saldo-label"
+                <small class="d-block mb-1 text-uppercase saldo-label"
                   >Saldo actual</small
                 >
                 <div class="saldo-amount">
@@ -53,13 +53,13 @@
 
         <!-- Botones de acción -->
         <div class="card shadow-lg menu-card fade-in-delay-3 mt-2">
-          <div class="card-body p-4">
-            <h5 class="card-title mb-4 fw-bold">
+          <div class="card-body p-3">
+            <h5 class="card-title mb-3 fw-bold">
               <i class="bi bi-grid-3x3-gap me-2"></i>
               Opciones
             </h5>
 
-            <div class="d-grid gap-3">
+            <div class="d-grid gap-2">
               <!-- Depositar -->
               <a
                 href="{% url 'deposit' %}"
