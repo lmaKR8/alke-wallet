@@ -1,0 +1,254 @@
+{% extends 'base.html' %} {% block title %}Últimos Movimientos — Alke Wallet{% endblock %} {% block content %}
+{% load wallet_filters %}
+<main class="min-vh-100 pt-4">
+  <div class="container py-3">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-7">
+        <!-- Encabezado -->
+        <div class="text-center mb-4 fade-in">
+          <h1 class="text-white fw-bold mb-2">Últimos Movimientos</h1>
+          <p class="text-white-50">
+            Historial de transacciones de tu billetera
+          </p>
+        </div>
+
+        <!-- Resumen estadístico -->
+        <div class="row g-3 mb-4 fade-in-delay-1">
+          <div class="col-6">
+            <div class="card shadow-lg menu-card text-center h-100">
+              <div
+                class="card-body p-4 d-flex flex-column justify-content-center"
+              >
+                <div class="mb-3">
+                  <div
+                    class="rounded-circle bg-success bg-opacity-10 d-inline-flex align-items-center justify-content-center stat-icon-container"
+                  >
+                    <i
+                      class="bi bi-arrow-down-circle-fill text-success stat-icon"
+                    ></i>
+                  </div>
+                </div>
+                <small class="text-uppercase stat-label">Ingresos</small>
+                <h4 class="mb-0 mt-2 fw-bold text-success">
+                  $ {{ total_ingresos|miles }}
+                </h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card shadow-lg menu-card text-center h-100">
+              <div
+                class="card-body p-4 d-flex flex-column justify-content-center"
+              >
+                <div class="mb-3">
+                  <div
+                    class="rounded-circle bg-danger bg-opacity-10 d-inline-flex align-items-center justify-content-center stat-icon-container"
+                  >
+                    <i
+                      class="bi bi-arrow-up-circle-fill text-danger stat-icon"
+                    ></i>
+                  </div>
+                </div>
+                <small class="text-uppercase stat-label">Egresos</small>
+                <h4 class="mb-0 mt-2 fw-bold text-danger">
+                  $ {{ total_egresos|miles }}
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="card shadow-lg menu-card mb-4 fade-in-delay-2">
+          <div class="card-body p-4">
+            <h6 class="fw-bold mb-3">
+              <i class="bi bi-funnel-fill me-2 icon-secundary"></i>
+              Filtrar movimientos
+            </h6>
+            <form method="get" action="{% url 'transaction_list' %}">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="tipo" class="form-label fw-bold"
+                    >Tipo de movimiento</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-filter-circle"></i>
+                    </span>
+                    <select class="form-select" id="tipo" name="tipo">
+                      <option value="todos" {% if tipo_seleccionado == "todos" %}selected{% endif %}>
+                        Todos los movimientos
+                      </option>
+                      <option value="deposito" {% if tipo_seleccionado == "deposito" %}selected{% endif %}>
+                        Solo depósitos
+                      </option>
+                      <option value="envio" {% if tipo_seleccionado == "envio" %}selected{% endif %}>
+                        Solo envíos
+                      </option>
+                      <option value="recibido" {% if tipo_seleccionado == "recibido" %}selected{% endif %}>
+                        Solo recibidos
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="periodo" class="form-label fw-bold"
+                    >Período de tiempo</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-calendar-range"></i>
+                    </span>
+                    <select class="form-select" id="periodo" name="periodo">
+                      <option value="30" {% if periodo_seleccionado == "30" %}selected{% endif %}>
+                        Últimos 30 días
+                      </option>
+                      <option value="7" {% if periodo_seleccionado == "7" %}selected{% endif %}>
+                        Últimos 7 días
+                      </option>
+                      <option value="90" {% if periodo_seleccionado == "90" %}selected{% endif %}>
+                        Últimos 3 meses
+                      </option>
+                      <option value="365" {% if periodo_seleccionado == "365" %}selected{% endif %}>
+                        Último año
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end">
+                  <button
+                    type="submit"
+                    class="btn btn-primary rounded-pill px-4"
+                  >
+                    <i class="bi bi-search me-2"></i>
+                    Aplicar filtros
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Lista de transacciones -->
+        <div class="card shadow-lg menu-card fade-in-delay-3">
+          <div class="card-body p-4">
+            {% if page_obj %} {% for tx in page_obj %}
+            <div
+              class="transaction-item d-flex align-items-center p-3 mb-2 rounded-3"
+            >
+              <!-- Ícono del tipo -->
+              <div class="transaction-icon me-3">
+                {% if tx.transaction_type == 'deposito' %}
+                <div
+                  class="rounded-circle bg-success bg-opacity-10 d-inline-flex align-items-center justify-content-center"
+                  style="width: 48px; height: 48px"
+                >
+                  <i class="bi bi-arrow-down-circle-fill text-success fs-4"></i>
+                </div>
+                {% elif tx.transaction_type == 'envio' %}
+                <div
+                  class="rounded-circle bg-danger bg-opacity-10 d-inline-flex align-items-center justify-content-center"
+                  style="width: 48px; height: 48px"
+                >
+                  <i class="bi bi-arrow-up-circle-fill text-danger fs-4"></i>
+                </div>
+                {% else %}
+                <div
+                  class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center"
+                  style="width: 48px; height: 48px"
+                >
+                  <i
+                    class="bi bi-arrow-down-left-circle-fill text-primary fs-4"
+                  ></i>
+                </div>
+                {% endif %}
+              </div>
+
+              <!-- Detalle -->
+              <div class="flex-grow-1">
+                <div class="fw-bold text-capitalize">
+                  {{ tx.transaction_type }}
+                </div>
+                <small class="text-muted">
+                  {% if tx.sender_account %} De: {{ tx.sender_account.user.user_name }} {% endif %} &nbsp;→&nbsp;
+                  {{ tx.receiver_account.user.user_name }}
+                </small>
+                <div class="small text-muted">
+                  {{ tx.transaction_date|date:"d/m/Y H:i" }}
+                </div>
+              </div>
+
+              <!-- Monto -->
+              <div class="text-end ms-2">
+                {% if tx.transaction_type == 'deposito' or tx.transaction_type == 'recibido' %}
+                <span class="fw-bold text-success fs-5">
+                  +{{ tx.receiver_account.currency.currency_symbol }} {{ tx.amount|miles }}
+                </span>
+                {% else %}
+                <span class="fw-bold text-danger fs-5">
+                  -{{ tx.sender_account.currency.currency_symbol }} {{ tx.amount|miles }}
+                </span>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
+
+            <!-- Paginación -->
+            {% if page_obj.has_other_pages %}
+            <nav class="mt-4" aria-label="Paginación de transacciones">
+              <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                  <a
+                    class="page-link rounded-pill me-1"
+                    href="?tipo={{ tipo_seleccionado }}&periodo={{ periodo_seleccionado }}&page={{ page_obj.previous_page_number }}"
+                  >
+                    <i class="bi bi-chevron-left"></i>
+                  </a>
+                </li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                  <span class="page-link">
+                    {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+                  </span>
+                </li>
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                  <a
+                    class="page-link rounded-pill ms-1"
+                    href="?tipo={{ tipo_seleccionado }}&periodo={{ periodo_seleccionado }}&page={{ page_obj.next_page_number }}"
+                  >
+                    <i class="bi bi-chevron-right"></i>
+                  </a>
+                </li>
+                {% endif %}
+              </ul>
+            </nav>
+            {% endif %} {% else %}
+            <div class="text-center py-5 text-muted">
+              <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+              <p class="mb-0">
+                No hay transacciones para los filtros seleccionados.
+              </p>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Botón Volver -->
+        <div class="text-center mt-3">
+          <a
+            href="{% url 'dashboard' %}"
+            class="btn btn-outline-secondary btn-sm rounded-pill px-4"
+          >
+            <i class="bi bi-arrow-left me-1"></i>
+            Volver al menú
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

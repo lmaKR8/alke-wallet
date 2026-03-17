@@ -1,0 +1,88 @@
+{% extends 'base.html' %} {% block title %}Depositar — Alke Wallet{% endblock %}
+{% block content %}
+{% load wallet_filters %}
+<main class="min-vh-100 pt-4">
+  <div class="container py-3">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <!-- Encabezado -->
+        <div class="text-center mb-4 fade-in">
+          <h1 class="text-white fw-bold mb-2">Depositar Dinero</h1>
+          <p class="text-white-50">Agrega fondos a tu billetera</p>
+        </div>
+
+        <!-- Card del formulario -->
+        <div class="card shadow-lg menu-card fade-in-delay-1">
+          <div class="card-body p-4">
+            <!-- Saldo actual -->
+            {% if account %}
+            <div class="saldo-actual-box mb-4">
+              <div class="text-center">
+                <small class="d-block mb-2 text-uppercase saldo-label"
+                  >Saldo actual</small
+                >
+                <div class="saldo-amount">
+                  {{ account.currency.currency_symbol }} {{ account.balance|miles }}
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            <!-- Formulario -->
+            <form method="post" action="{% url 'deposit' %}" novalidate>
+              {% csrf_token %}
+
+              <!-- Monto -->
+              <div class="mb-3">
+                <label
+                  for="{{ form.amount.id_for_label }}"
+                  class="form-label fw-bold"
+                >
+                  Monto a depositar
+                </label>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text">
+                    <i class="bi bi-currency-dollar"></i>
+                  </span>
+                  {{ form.amount }}
+                </div>
+                {% if form.amount.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.amount.errors|join:', ' }}
+                </div>
+                {% endif %}
+                <small class="form-text text-muted">
+                  <i class="bi bi-exclamation-circle me-1"></i>
+                  Ingresa el monto en {% if account %}{{ account.currency.currency_symbol }}{% else %}CLP{% endif %}
+                </small>
+              </div>
+
+              <!-- Botón Depositar -->
+              <div class="d-grid mt-4">
+                <button
+                  type="submit"
+                  class="btn btn-success btn-lg rounded-pill"
+                >
+                  <i class="bi bi-plus-circle me-2"></i>
+                  Confirmar Depósito
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Botón Volver -->
+        <div class="text-center mt-3">
+          <a
+            href="{% url 'dashboard' %}"
+            class="btn btn-outline-secondary btn-sm rounded-pill px-4"
+          >
+            <i class="bi bi-arrow-left me-1"></i>
+            Volver al menú
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

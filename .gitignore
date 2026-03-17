@@ -1,3 +1,7 @@
 # Archivos y carpetas ignorados por Git
 fuente-verdad/
 env/
+docs/agent.md
+docs/plan.md
+data/.env.db
+data/.env.txt

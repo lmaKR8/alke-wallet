@@ -1,0 +1,57 @@
+[
+  {
+    "model": "wallet.currency",
+    "pk": 1,
+    "fields": {
+      "currency_name": "Peso Chileno",
+      "currency_symbol": "CLP",
+      "created_at": "2024-01-01T10:00:00Z",
+      "updated_at": "2024-01-01T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.currency",
+    "pk": 2,
+    "fields": {
+      "currency_name": "Dólar Estadounidense",
+      "currency_symbol": "USD",
+      "created_at": "2024-01-01T10:00:00Z",
+      "updated_at": "2024-01-01T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.currency",
+    "pk": 3,
+    "fields": {
+      "currency_name": "Euro",
+      "currency_symbol": "EUR",
+      "created_at": "2024-01-01T10:00:00Z",
+      "updated_at": "2024-01-01T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.currency",
+    "pk": 4,
+    "fields": {
+      "currency_name": "Yuan Chino",
+      "currency_symbol": "CNY",
+      "created_at": "2024-01-01T10:00:00Z",
+      "updated_at": "2024-01-01T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.currency",
+    "pk": 5,
+    "fields": {
+      "currency_name": "Dólar Canadiense",
+      "currency_symbol": "CAD",
+      "created_at": "2024-01-01T10:00:00Z",
+      "updated_at": "2024-01-01T10:00:00Z",
+      "deleted_at": null
+    }
+  }
+]

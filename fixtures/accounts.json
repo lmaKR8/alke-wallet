@@ -1,0 +1,266 @@
+[
+  {
+    "model": "wallet.account",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "currency": 1,
+      "balance": "3500000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "currency": 2,
+      "balance": "15000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 3,
+    "fields": {
+      "user": 2,
+      "currency": 1,
+      "balance": "2800000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 4,
+    "fields": {
+      "user": 3,
+      "currency": 1,
+      "balance": "4200000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 5,
+    "fields": {
+      "user": 3,
+      "currency": 2,
+      "balance": "25000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 6,
+    "fields": {
+      "user": 4,
+      "currency": 1,
+      "balance": "5100000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 7,
+    "fields": {
+      "user": 4,
+      "currency": 2,
+      "balance": "18500.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 8,
+    "fields": {
+      "user": 5,
+      "currency": 1,
+      "balance": "3800000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 9,
+    "fields": {
+      "user": 5,
+      "currency": 2,
+      "balance": "12000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 10,
+    "fields": {
+      "user": 6,
+      "currency": 1,
+      "balance": "4500000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 11,
+    "fields": {
+      "user": 7,
+      "currency": 1,
+      "balance": "2200000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 12,
+    "fields": {
+      "user": 8,
+      "currency": 4,
+      "balance": "145000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 13,
+    "fields": {
+      "user": 9,
+      "currency": 1,
+      "balance": "1900000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 14,
+    "fields": {
+      "user": 10,
+      "currency": 3,
+      "balance": "8500.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 15,
+    "fields": {
+      "user": 11,
+      "currency": 1,
+      "balance": "8800000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 16,
+    "fields": {
+      "user": 11,
+      "currency": 2,
+      "balance": "32000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 17,
+    "fields": {
+      "user": 12,
+      "currency": 1,
+      "balance": "6500000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 18,
+    "fields": {
+      "user": 12,
+      "currency": 3,
+      "balance": "15000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 19,
+    "fields": {
+      "user": 13,
+      "currency": 4,
+      "balance": "125000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 20,
+    "fields": {
+      "user": 14,
+      "currency": 2,
+      "balance": "11500.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 21,
+    "fields": {
+      "user": 15,
+      "currency": 1,
+      "balance": "7000000.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "wallet.account",
+    "pk": 22,
+    "fields": {
+      "user": 15,
+      "currency": 5,
+      "balance": "9500.00",
+      "created_at": "2024-01-11T10:00:00Z",
+      "updated_at": "2024-01-11T10:00:00Z",
+      "deleted_at": null
+    }
+  }
+]

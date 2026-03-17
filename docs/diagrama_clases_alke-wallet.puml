@@ -1,0 +1,242 @@
+@startuml diagrama_clases_alke_wallet
+
+!theme plain
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam backgroundColor white
+
+title Diagrama de Clases - Alke Wallet\nSistema de Billetera Digital\nEvaluación Módulo 7
+
+' ============================================================================
+'              CLASES EXTERNAS DJANGO (referencia / framework)
+' ============================================================================
+
+abstract class "AbstractUser" as AbstractUser <<Django>> {
+    # password : str
+    # is_staff : bool
+    # is_superuser : bool
+    # is_active : bool
+    # date_joined : DateTimeField
+    ==
+    + set_password(raw_password) : void
+    + check_password(raw_password) : bool
+}
+
+class "BaseUserManager" as BaseUserManager <<Django>> {
+    ==
+    + normalize_email(email) : str
+}
+
+class "UserCreationForm" as UserCreationForm <<Django>> {
+    + password1 : CharField
+    + password2 : CharField
+}
+
+class "AuthenticationForm" as AuthenticationForm <<Django>> {
+    + username : CharField
+    + password : CharField
+}
+
+class "forms.Form" as FormsForm <<Django>> {
+    ==
+    + is_valid() : bool
+    + cleaned_data : dict
+}
+
+' ============================================================================
+'                    MIXIN BASE  (apps/wallet/mixins.py)
+' ============================================================================
+
+class SoftDeleteManager {
+    ==
+    + get_queryset() : QuerySet
+}
+
+abstract class SoftDeleteModel {
+    # created_at : DateTimeField
+    # updated_at : DateTimeField
+    # deleted_at : DateTimeField
+    ==
+    # objects : SoftDeleteManager
+    # all_objects : Manager
+    ==
+    + soft_delete() : void
+    + restore() : void
+    + is_deleted : bool <<property>>
+}
+
+' ============================================================================
+'                    APP ACCOUNTS  (apps/accounts/)
+' ============================================================================
+
+class UserManager {
+    ==
+    + get_queryset() : QuerySet
+    + create_user(email, user_name, password) : User
+    + create_superuser(email, user_name, password) : User
+}
+
+class User {
+    + user_name : CharField(60)
+    + email : EmailField(100) <<unique>>
+    --
+    + USERNAME_FIELD = "email"
+    + REQUIRED_FIELDS = ["user_name"]
+    ==
+    + objects : UserManager
+    + all_objects : Manager
+    ==
+    + __str__() : str
+    + get_active_accounts() : QuerySet
+}
+
+class RegisterForm {
+    + email : EmailField
+    + user_name : CharField(60)
+    ==
+    + Meta.model = User
+    + Meta.fields = (user_name, email, password1, password2)
+}
+
+class LoginForm {
+    + username : EmailField
+    + password : CharField
+}
+
+' ============================================================================
+'                    APP WALLET  (apps/wallet/)
+' ============================================================================
+
+class Currency {
+    + currency_name : CharField(50) <<unique>>
+    + currency_symbol : CharField(3) <<unique>>
+    ==
+    + __str__() : str
+}
+
+class Account {
+    + user : ForeignKey → User
+    + currency : ForeignKey → Currency
+    + balance : DecimalField(12,2)
+    ==
+    + __str__() : str
+    + deposit(amount) : void
+    + withdraw(amount) : void
+}
+
+class DepositForm {
+    + amount : DecimalField
+    ==
+    + clean_amount() : Decimal
+}
+
+' ============================================================================
+'                    APP TRANSACTIONS  (apps/transactions/)
+' ============================================================================
+
+class Transaction {
+    + sender_account : ForeignKey → Account <<nullable>>
+    + receiver_account : ForeignKey → Account
+    + amount : DecimalField(12,2)
+    + transaction_date : DateTimeField
+    ==
+    + __str__() : str
+    + transaction_type : str <<property>>
+}
+
+' ============================================================================
+'                    APP CONTACTS  (apps/contacts/)
+' ============================================================================
+
+class SendMoneyForm {
+    + amount : DecimalField
+    + message : CharField(255)
+    ==
+    + clean_amount() : Decimal
+}
+
+' ============================================================================
+'                              RELACIONES
+' ============================================================================
+
+' Herencia desde Django (framework)
+AbstractUser   <|-- User
+BaseUserManager <|-- UserManager
+UserCreationForm <|-- RegisterForm
+AuthenticationForm <|-- LoginForm
+FormsForm <|-- DepositForm
+FormsForm <|-- SendMoneyForm
+
+' Herencia desde SoftDeleteModel (mixin de negocio)
+SoftDeleteModel <|-- User
+SoftDeleteModel <|-- Currency
+SoftDeleteModel <|-- Account
+SoftDeleteModel <|-- Transaction
+
+' Managers
+SoftDeleteModel *-- SoftDeleteManager : objects
+User *-- UserManager : objects
+
+' Asociaciones — Claves Foráneas (FK)
+User "1" --o "0..*" Account : user >
+Currency "1" --o "0..*" Account : currency >
+Account "0..1" --o "0..*" Transaction : sender_account\n(nullable) >
+Account "1" --o "0..*" Transaction : receiver_account >
+
+' ============================================================================
+'                              NOTAS
+' ============================================================================
+
+note right of SoftDeleteModel
+    <b>Modelo Abstracto Base</b>
+    ─────────────────────────
+    Todos los modelos de negocio
+    heredan de este mixin.
+    Implementa eliminación lógica
+    (soft delete) con deleted_at.
+    deleted_at = NULL → activo
+    deleted_at != NULL → eliminado
+end note
+
+note right of Transaction
+    <b>Depósito vs Transferencia</b>
+    ────────────────────────────
+    sender_account = NULL
+      → depósito externo
+    sender_account != NULL
+      → transferencia entre usuarios
+end note
+
+note bottom of Account
+    <b>Balance Decimal</b>
+    ──────────────────
+    DecimalField(12,2)
+    Precisión monetaria exacta.
+    Un usuario puede tener múltiples
+    cuentas en distintas monedas.
+end note
+
+note left of User
+    <b>Email como identificador</b>
+    ───────────────────────────
+    USERNAME_FIELD = "email"
+    El campo "username" de Django
+    es reemplazado por "user_name".
+end note
+
+' ============================================================================
+'                              LEYENDA
+' ============================================================================
+
+legend right
+    |= Símbolo |= Significado |
+    | + | Público |
+    | - | Privado |
+    | # | Protegido |
+    | <|-- | Herencia |
+    | *-- | Composición |
+    | o-- | Agregación /FK |
+    | <<Django>> | Clase del framework |
+endlegend
+
+@enduml
