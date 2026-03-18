@@ -147,7 +147,7 @@
                 >
                   <i class="bi bi-arrow-down-circle-fill text-success fs-4"></i>
                 </div>
-                {% elif tx.transaction_type == 'envio' %}
+                {% elif tx.transaction_type == 'transferencia' and tx.sender_account.user == request.user %}
                 <div
                   class="rounded-circle bg-danger bg-opacity-10 d-inline-flex align-items-center justify-content-center"
                   style="width: 48px; height: 48px"
@@ -156,11 +156,11 @@
                 </div>
                 {% else %}
                 <div
-                  class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center"
+                  class="rounded-circle bg-success bg-opacity-10 d-inline-flex align-items-center justify-content-center"
                   style="width: 48px; height: 48px"
                 >
                   <i
-                    class="bi bi-arrow-down-left-circle-fill text-primary fs-4"
+                    class="bi bi-arrow-down-left-circle-fill text-success fs-4"
                   ></i>
                 </div>
                 {% endif %}
@@ -169,12 +169,24 @@
               <!-- Detalle -->
               <div class="flex-grow-1">
                 <div class="fw-bold text-capitalize">
-                  {{ tx.transaction_type }}
+                  {% if tx.transaction_type == 'deposito' %}Depósito
+                  {% elif tx.sender_account.user == request.user %}Transferencia enviada
+                  {% else %}Transferencia recibida{% endif %}
                 </div>
                 <small class="text-muted">
-                  {% if tx.sender_account %} De: {{ tx.sender_account.user.user_name }} {% endif %} &nbsp;→&nbsp;
-                  {{ tx.receiver_account.user.user_name }}
+                  {% if tx.transaction_type == 'deposito' %}
+                    A tu cuenta
+                  {% elif tx.sender_account.user == request.user %}
+                    Para: <strong>{{ tx.receiver_account.user.user_name }}</strong>
+                  {% else %}
+                    De: <strong>{{ tx.sender_account.user.user_name }}</strong>
+                  {% endif %}
                 </small>
+                {% if tx.message %}
+                <div class="small text-muted fst-italic">
+                  <i class="bi bi-chat-left-text me-1"></i>{{ tx.message }}
+                </div>
+                {% endif %}
                 <div class="small text-muted">
                   {{ tx.transaction_date|date:"d/m/Y H:i" }}
                 </div>

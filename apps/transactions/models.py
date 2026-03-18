@@ -50,6 +50,13 @@ class Transaction(SoftDeleteModel):
         decimal_places=2,
         verbose_name='Monto',
     )
+    message = models.CharField(
+        max_length=255,
+        blank=True,
+        default='',
+        verbose_name='Mensaje',
+        help_text='Mensaje opcional del remitente.',
+    )
     transaction_date = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Fecha de transacción',

@@ -771,6 +771,13 @@ body.landing-page main.min-vh-100 .py-2 {
     border-left-color: var(--danger-red);
 }
 
+/* Dentro de cards blancas, restaurar el color gris normal para texto secundario */
+.menu-card .text-muted,
+.menu-card small,
+.menu-card .small {
+    color: #6c757d !important;
+}
+
 .transaction-amount {
     font-size: 1.25rem;
     font-weight: 600;

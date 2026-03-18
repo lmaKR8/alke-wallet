@@ -213,11 +213,12 @@ def send_money_view(request, receiver_id):
             amount = form.cleaned_data['amount']
 
             if amount > sender_account.balance:
+                balance_fmt = '{:,.0f}'.format(float(sender_account.balance)).replace(',', '.')
                 messages.error(
                     request,
                     f'Saldo insuficiente. Tu saldo es '
                     f'{sender_account.currency.currency_symbol} '
-                    f'{sender_account.balance:,.2f}.'
+                    f'{balance_fmt}.'
                 )
                 return render(request, 'contacts/send_money.html', {
                     'form': form,
@@ -233,14 +234,16 @@ def send_money_view(request, receiver_id):
                         sender_account=sender_account,
                         receiver_account=receiver_account,
                         amount=amount,
+                        message=form.cleaned_data.get('message', ''),
                     )
                     sender_account.withdraw(amount)
                     receiver_account.deposit(amount)
 
+                amount_fmt = '{:,.0f}'.format(float(amount)).replace(',', '.')
                 messages.success(
                     request,
                     f'Enviaste {sender_account.currency.currency_symbol} '
-                    f'{amount:,.2f} a {receiver.user_name} correctamente.'
+                    f'{amount_fmt} a {receiver.user_name} correctamente.'
                 )
                 return redirect('dashboard')
 

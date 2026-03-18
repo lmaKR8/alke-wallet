@@ -67,16 +67,18 @@ Aplicación web modular con Django que integra:
 
 - **4 apps Django** bajo `apps/` (`accounts`, `wallet`, `transactions`, `contacts`)
 - **Modelo User personalizado** con email como campo de autenticación, extendiendo `AbstractUser`
-- **Mixin `SoftDeleteModel`** compartido por todos los modelos de negocio (eliminación lógica)
-- **4 modelos ORM** que mapean exactamente el esquema de Etapa 2: `User`, `Currency`, `Account`, `Transaction`
+- **Mixin `SoftDeleteModel`** compartido por los modelos de negocio (eliminación lógica)
+- **5 modelos ORM** que mapean el esquema de Etapa 2 + modelo `Contact`: `User`, `Currency`, `Account`, `Transaction`, `Contact`
 - **Sistema de autenticación** completo: registro, login y logout
 - **Middleware global** `LoginRequiredMiddleware` que protege todas las rutas privadas
-- **11 templates HTML** con herencia desde `base.html` y componentes reutilizables (`_navbar`, `_alerts`, `_footer`)
-- **Historial de transacciones** con filtros dinámicos (Model Q) y paginación
+- **15 templates HTML** con herencia desde `base.html` y componentes reutilizables (`_navbar`, `_alerts`, `_footer`)
+- **Historial de transacciones** con filtros dinámicos (Model Q) y paginación (período por defecto: 90 días)
 - **Transferencias atómicas** con `transaction.atomic()` para garantizar consistencia de saldos
+- **CRUD completo de contactos** con alias personalizado por usuario
 - **Búsqueda de usuarios** por nombre o email con Model Q (OR compuesto)
-- **18 tests de integración** distribuidos en 3 apps (accounts, wallet, transactions)
-- **Fixtures de datos demo**: 5 monedas, 15 usuarios temáticos (LOTR), 22 cuentas, 60 transacciones
+- **Template tag personalizado** `wallet_filters` con filtro `miles` para formato numérico chileno
+- **29 tests de integración** distribuidos en 4 apps (accounts, wallet, transactions, contacts)
+- **Fixtures de datos demo**: 5 monedas, 15 usuarios temáticos (LOTR), 22 cuentas, 60 transacciones, 11 contactos
 
 ---
 
@@ -94,6 +96,7 @@ Aplicación web modular con Django que integra:
 | **JavaScript** | ES6 | Interacciones mínimas del lado del cliente |
 | **asgiref** | 3.11.1 | Soporte ASGI de Django |
 | **sqlparse** | 0.5.5 | Formateador SQL (dependencia de Django) |
+| **tzdata** | 2025.3 | Base de datos de zonas horarias (Windows) |
 
 ---
 
@@ -111,7 +114,7 @@ alke-wallet/
 │
 ├── alke_wallet/                           # Configuración del proyecto Django
 │   ├── __init__.py
-│   ├── settings.py                            # PostgreSQL, apps, auth, i18n, mensajes
+│   ├── settings.py                            # PostgreSQL/SQLite, apps, auth, i18n, mensajes
 │   ├── urls.py                                # URLs raíz con includes de 4 apps
 │   ├── middleware.py                          # LoginRequiredMiddleware (protección global)
 │   ├── wsgi.py
@@ -135,20 +138,25 @@ alke-wallet/
 │   │   ├── views.py                               # index_view, dashboard_view, deposit_view
 │   │   ├── urls.py                                # / | /dashboard/ | /deposit/
 │   │   ├── admin.py
-│   │   └── tests.py                               # 6 tests: depósito, soft delete, dashboard
+│   │   ├── tests.py                               # 6 tests: depósito, soft delete, dashboard
+│   │   └── templatetags/
+│   │       └── wallet_filters.py                  # Filtro template |miles (formato numérico)
 │   │
 │   ├── transactions/                          # Historial de transacciones
-│   │   ├── models.py                              # Transaction (con FK nullable para depósitos)
+│   │   ├── models.py                              # Transaction (con FK nullable + campo message)
 │   │   ├── views.py                               # transaction_list_view (Q + Paginator)
 │   │   ├── urls.py                                # /transactions/
 │   │   ├── admin.py
 │   │   └── tests.py                               # 4 tests: filtros, período, autenticación
 │   │
-│   └── contacts/                              # Búsqueda de usuarios y transferencias
-│       ├── forms.py                               # SendMoneyForm
-│       ├── views.py                               # contacts_view, send_money_view
-│       ├── urls.py                                # /contacts/ | /contacts/send/<id>/
-│       └── tests.py
+│   └── contacts/                              # CRUD de contactos y transferencias
+│       ├── models.py                              # Contact (owner/contact_user/alias)
+│       ├── forms.py                               # ContactAliasForm, SendMoneyForm
+│       ├── views.py                               # my_contacts_view, add_contact_view,
+│       │                                          # edit_contact_view, delete_contact_view,
+│       │                                          # send_money_view
+│       ├── urls.py                                # /contacts/ y sub-rutas CRUD + send
+│       └── tests.py                               # 15 tests: CRUD contactos + envío de dinero
 │
 ├── templates/                             # Templates globales
 │   ├── base.html                              # Template raíz (Bootstrap 5.3.2 CDN)
@@ -167,7 +175,9 @@ alke-wallet/
 │   ├── transactions/
 │   │   └── list.html                              # Historial con filtros y paginación
 │   └── contacts/
-│       ├── list.html                              # Búsqueda de usuarios
+│       ├── list.html                              # Lista de contactos propios
+│       ├── add_contact.html                       # Búsqueda y alta de nuevo contacto
+│       ├── edit_contact.html                      # Edición de alias de contacto
 │       └── send_money.html                        # Formulario de transferencia
 │
 ├── static/                                # Archivos estáticos
@@ -181,13 +191,15 @@ alke-wallet/
 │   ├── currencies.json                        # 5 monedas: CLP, USD, EUR, CNY, CAD
 │   ├── users.json                             # 15 usuarios (temática El Señor de los Anillos)
 │   ├── accounts.json                          # 22 cuentas en distintas monedas
-│   └── transactions.json                      # 60 transacciones (depósitos y transferencias)
+│   ├── transactions.json                      # 60 transacciones (depósitos y transferencias)
+│   └── contacts.json                          # 11 contactos de demostración
 │
 ├── data/                                  # Credenciales de la base de datos (ignorado por Git)
 │   └── .env.db                                # Variables de entorno para la conexión a PostgreSQL
 │
 └── docs/                                  # Documentación técnica del proyecto
     ├── COMMITS.md                             # Convenciones de commits semánticos
+    ├── PLAN.md                                # Plan de desarrollo por fases
     ├── diagrama_clases_alke-wallet.puml       # Diagrama de clases PlantUML
     └── diagrama_clases_alke-wallet.md         # Documentación del diagrama de clases
 ```
@@ -202,10 +214,11 @@ El campo `username` de Django es reemplazado por `user_name`. El manager persona
 `UserManager` filtra usuarios activos mediante soft delete.
 
 ### Soft Delete (Eliminación Lógica)
-`SoftDeleteModel` es un modelo abstracto en `apps/wallet/mixins.py` heredado por todos
-los modelos de negocio. En lugar de eliminar registros con `DELETE`, se registra la fecha
-de eliminación en `deleted_at`. El manager por defecto (`objects`) filtra automáticamente
-`deleted_at IS NULL`; el manager `all_objects` permite acceder al historial completo.
+`SoftDeleteModel` es un modelo abstracto en `apps/wallet/mixins.py` heredado por los
+modelos de negocio (`User`, `Currency`, `Account`, `Transaction`). En lugar de eliminar
+registros con `DELETE`, se registra la fecha de eliminación en `deleted_at`. El manager
+por defecto (`objects`) filtra automáticamente `deleted_at IS NULL`; el manager
+`all_objects` permite acceder al historial completo.
 
 ```python
 instancia.soft_delete()  # deleted_at = timezone.now()
@@ -214,15 +227,17 @@ instancia.is_deleted     # True si deleted_at no es None
 ```
 
 ### Model Q — Filtros Dinámicos
-Usado en `transaction_list_view` y `contacts_view` para construir consultas con condiciones
-OR/AND compuestas en tiempo de ejecución, sin concatenar cadenas SQL.
+Usado en `transaction_list_view`, `my_contacts_view` y `add_contact_view` para construir
+consultas con condiciones OR/AND compuestas en tiempo de ejecución, sin concatenar
+cadenas SQL.
 
 ```python
 # Historial: transacciones donde el usuario es remitente O receptor
 base_query = Q(sender_account_id__in=ids) | Q(receiver_account_id__in=ids)
 
-# Búsqueda de contactos por nombre O email
-search_query = Q(user_name__icontains=term) | Q(email__icontains=term)
+# Búsqueda de contactos por alias O nombre O email
+search_query = Q(alias__icontains=term) | Q(contact_user__user_name__icontains=term) \
+             | Q(contact_user__email__icontains=term)
 ```
 
 ### Transferencias Atómicas
@@ -241,12 +256,21 @@ with transaction.atomic():
 `LoginRequiredMiddleware` en `alke_wallet/middleware.py` intercepta cada request y
 redirige a `/accounts/login/?next=<ruta>` si el usuario no está autenticado, sin
 necesidad de aplicar `@login_required` en cada vista individualmente. Las rutas
-públicas (landing, login, registro, admin, static) están explícitamente excluidas.
+públicas (landing `/`, login, registro, admin, static, media) están explícitamente excluidas.
 
 ### Paginación Django
 `transaction_list_view` usa `Paginator` de Django para paginar el historial de
 transacciones a 5 registros por página, manteniendo el estado de los filtros
-de tipo y período entre páginas.
+de tipo y período entre páginas. El período por defecto es de **90 días**.
+
+### Template Tag Personalizado — `wallet_filters`
+El módulo `apps/wallet/templatetags/wallet_filters.py` registra el filtro `miles`,
+que formatea valores numéricos con separador de miles usando punto (estilo chileno):
+
+```python
+# Ejemplo en template:
+{{ account.balance|miles }}  # → 1.234.567
+```
 
 ### Sistema de Mensajes → Bootstrap
 `MESSAGE_TAGS` en `settings.py` mapea los niveles de mensajes de Django a clases
@@ -270,9 +294,9 @@ Todos los templates extienden `base.html` con bloques `{% block title %}`,
 
 ### Dashboard
 - Visualización de todas las cuentas activas del usuario por moneda
-- Cuenta principal CLP destacada con saldo actual
+- Cuenta principal CLP destacada con saldo actual (muestra `CLP 0,00` si no hay cuentas)
 - Accesos rápidos a Depositar, Enviar y Transacciones
-- Listado de las últimas transacciones recientes
+- Listado de las últimas transacciones recientes con formato de miles
 
 ### Depósitos
 - Formulario con validación de monto positivo (`DecimalField`)
@@ -283,21 +307,27 @@ Todos los templates extienden `base.html` con bloques `{% block title %}`,
 ### Historial de Transacciones
 - Vista completa de movimientos del usuario (depósitos, envíos y recibidos)
 - Filtro por tipo: Todos / Depósito / Envío / Recibido
-- Filtro por período: 7 / 30 / 90 / 365 días
+- Filtro por período: 7 / 30 / 90 / 365 días (por defecto: 90 días)
 - Resumen de totales: total ingresado y total enviado
 - Paginación de 5 resultados por página con navegación
 
-### Contactos y Envío de Dinero
-- Búsqueda de usuarios por nombre o email (Model Q con OR)
-- Transferencia de dinero con validación de saldo suficiente
+### Contactos (CRUD completo)
+- Lista de contactos propios del usuario con búsqueda por alias, nombre o email
+- Alta de nuevo contacto: búsqueda de usuarios del sistema (Model Q) y guardado con alias opcional
+- Edición del alias de un contacto existente
+- Eliminación de un contacto con protección de acceso (solo el propietario puede eliminarlo)
+- Acceso rápido a "Enviar dinero" desde cada tarjeta de contacto
+
+### Envío de Dinero
+- Transferencia de dinero con validación de saldo suficiente y mensaje opcional
 - Operación atómica: si falla un paso, no se modifica ningún saldo
-- Verificación de que el receptor tenga cuenta en la misma moneda
+- Verificación de que el receptor tenga cuenta en la misma moneda que el remitente
 
 ---
 
 ## Modelos de Datos (ORM)
 
-El ORM replica exactamente el esquema físico de la Etapa 2 (PostgreSQL):
+El ORM replica el esquema físico de la Etapa 2 (PostgreSQL) y añade el modelo `Contact`:
 
 ### SoftDeleteModel (Mixin abstracto — `apps/wallet/mixins.py`)
 
@@ -341,13 +371,29 @@ El ORM replica exactamente el esquema físico de la Etapa 2 (PostgreSQL):
 | Campo E2 | Campo Django | Tipo |
 | -------- | ------------ | ---- |
 | `id_transaction` | `id` (PK auto) | AutoField |
-| `sender_account_id` | `sender_account` | FK → Account (null=True) |
+| `sender_account_id` | `sender_account` | FK → Account (SET_NULL, null=True) |
 | `receiver_account_id` | `receiver_account` | FK → Account (CASCADE) |
 | `amount` | `amount` | DecimalField(12, 2) |
+| — | `message` | CharField(255, blank=True) |
 | `transaction_date` | `transaction_date` | DateTimeField(auto_now_add) |
 
 > `sender_account = NULL` indica un depósito externo (sin cuenta de origen).
 > `sender_account != NULL` indica una transferencia entre usuarios.
+> `message` es un campo adicional respecto al esquema E2 para mensajes opcionales.
+
+### Contact (`apps/contacts/models.py`)
+
+| Campo | Tipo | Descripción |
+| ----- | ---- | ----------- |
+| `id` | AutoField | PK auto |
+| `owner` | FK → User (CASCADE) | Usuario propietario del contacto |
+| `contact_user` | FK → User (CASCADE) | Usuario guardado como contacto |
+| `alias` | CharField(60, blank=True) | Apodo personalizado (opcional) |
+| `created_at` | DateTimeField | Timestamp de creación (auto) |
+
+> Restricción: `unique_together = ('owner', 'contact_user')` — un usuario no puede guardar dos veces al mismo contacto.
+> El modelo `Contact` no hereda de `SoftDeleteModel` (eliminación física).
+> `display_name`: propiedad que devuelve el alias si existe, o el `user_name` del contacto.
 
 ---
 
@@ -447,19 +493,23 @@ source env/Scripts/activate       # Windows
 # 3. Instalar dependencias
 pip install -r requirements.txt
 
-# 4. Crear el archivo de credenciales PostgreSQL (ignorado por Git, debe crearse manualmente)
-# Crear data/.env.db con el siguiente contenido:
-# DB_NAME=alke_wallet
-# DB_USER=postgres
-# DB_PASSWORD=tu_password
-# DB_HOST=localhost
-# DB_PORT=5432
+# 4. Configurar la base de datos
+# Opción A — Desarrollo con SQLite (descomentar en settings.py):
+#   Descomentar el bloque SQLite y comentar el bloque PostgreSQL en DATABASES.
+
+# Opción B — Producción con PostgreSQL:
+#   Crear data/.env.db con el siguiente contenido:
+#   DB_NAME=alke_wallet
+#   DB_USER=postgres
+#   DB_PASSWORD=tu_password
+#   DB_HOST=localhost
+#   DB_PORT=5432
 
 # 5. Aplicar migraciones
 python manage.py migrate
 
 # 6. Cargar datos de demostración
-python manage.py loaddata currencies users accounts transactions
+python manage.py loaddata currencies users accounts transactions contacts
 
 # 7. Iniciar el servidor de desarrollo
 python manage.py runserver
@@ -487,7 +537,10 @@ Password: password123
 | `/dashboard/` | `dashboard_view` | Panel principal (login requerido) |
 | `/deposit/` | `deposit_view` | Formulario de depósito (login requerido) |
 | `/transactions/` | `transaction_list_view` | Historial con filtros (login requerido) |
-| `/contacts/` | `contacts_view` | Búsqueda de usuarios (login requerido) |
+| `/contacts/` | `my_contacts_view` | Lista de contactos propios (login requerido) |
+| `/contacts/add/` | `add_contact_view` | Buscar y agregar contacto (login requerido) |
+| `/contacts/<pk>/edit/` | `edit_contact_view` | Editar alias de contacto (login requerido) |
+| `/contacts/<pk>/delete/` | `delete_contact_view` | Eliminar contacto (POST, login requerido) |
 | `/contacts/send/<id>/` | `send_money_view` | Transferencia a usuario (login requerido) |
 | `/admin/` | Django Admin | Panel de administración |
 
@@ -495,7 +548,7 @@ Password: password123
 
 ## Testing
 
-El proyecto incluye **18 tests de integración** distribuidos en 3 apps:
+El proyecto incluye **29 tests de integración** distribuidos en 4 apps:
 
 ### Ejecutar todos los tests
 
@@ -508,8 +561,9 @@ python manage.py test apps
 | App | Tests | Qué verifica |
 | --- | ----- | ------------ |
 | `accounts` | 4 | Modelo User (USERNAME_FIELD), login válido/inválido, creación de usuario vía registro |
-| `wallet` | 6 | Depósito crea Transaction, depósito actualiza saldo, monto inválido, soft delete, exclusión de queryset, dashboard requiere login |
+| `wallet` | 6 | Depósito crea Transaction, depósito actualiza saldo, monto inválido, soft delete de Account, exclusión de queryset, dashboard requiere login |
 | `transactions` | 4 | Vista sin filtros devuelve 200, filtro por tipo, filtro por período, protección de ruta |
+| `contacts` | 15 | CRUD completo de contactos (lista, búsqueda, alta, edición, eliminación, protección de acceso) + envío de dinero (éxito, saldo insuficiente, atomicidad) |
 
 ### Descripción de Tests Clave
 
@@ -533,6 +587,23 @@ test_transaction_list_no_filter    # GET /transactions/ → 200 con page_obj
 test_transaction_list_filter_type  # ?tipo=envio → solo envíos del usuario
 test_transaction_list_filter_period  # ?periodo=7 → solo últimos 7 días
 test_transaction_list_requires_login  # sin sesión → redirige al login
+
+# contacts — verifica CRUD y envío de dinero
+test_contacts_list_empty               # sin contactos → 200
+test_contacts_list_shows_contacts      # contactos guardados aparecen en la lista
+test_contacts_list_search_by_alias     # ?q= filtra por alias
+test_contacts_list_search_by_name      # ?q= filtra por nombre de usuario
+test_add_contact_get                   # GET /contacts/add/ → 200
+test_add_contact_search                # ?q=bilbo → resultados de búsqueda
+test_add_contact_post_creates_contact  # POST crea contacto y redirige
+test_add_contact_post_no_duplicate     # no permite duplicados
+test_edit_contact_get                  # GET /contacts/<pk>/edit/ → 200
+test_edit_contact_post_updates_alias   # POST actualiza alias
+test_delete_contact_post_removes_contact      # POST elimina el contacto
+test_delete_contact_other_user_forbidden      # no se puede eliminar contacto ajeno → 404
+test_send_money_success             # POST válido → crea Transaction, actualiza balances
+test_send_money_insufficient_funds  # saldo insuficiente → sin Transaction
+test_send_money_atomic              # fallo en deposit → rollback completo
 ```
 
 ---
@@ -578,7 +649,8 @@ Formato: `tipo(alcance): descripción breve en español (máx. 72 caracteres)`
 | `feature/etapa3-models` | Fase 2: Modelos ORM y migraciones | Mergeada |
 | `feature/etapa3-auth` | Fase 4: Autenticación y middleware | Mergeada |
 | `feature/etapa3-mvt` | Fase 5: Vistas y templates MVT | Mergeada |
-| `feature/etapa3-tests` | Fase 8: Suite de tests | Mergeada |
+| `feature/etapa3-contacts` | Fase 6: CRUD de contactos | Mergeada |
+| `feature/etapa3-tests` | Fase 8: Suite de tests completa | Mergeada |
 
 ---
 
