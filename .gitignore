@@ -3,5 +3,6 @@ fuente-verdad/
 env/
 docs/agent.md
 docs/plan.md
+docs/aprendizaje.md
 data/.env.db
 data/.env.txt
